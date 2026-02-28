@@ -1,0 +1,31 @@
+# Ambientes Virtuais (Não enviar a pasta de bibliotecas)
+.venv/
+venv/
+env/
+bin/
+lib/
+share/
+
+# Arquivos de Configuração e Segredos (CRÍTICO para Cibersegurança)
+.env
+*.env
+auth.json
+secrets.json
+
+# Banco de Dados Vetorial Local
+# Geralmente não enviamos o DB para o Git, pois ele é gerado pelo criar_db.py
+chroma_db/
+rag_db/
+db_local/
+
+# Cache do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+
+
+# Logs e arquivos temporários
+*.log
+.DS_Store
+Thumbs.db
