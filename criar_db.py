@@ -30,31 +30,36 @@ def dividir_chucks(documentos):
 def vetrizar_chucks(chucks):
     embeddings = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")
     
-    # Definimos um tamanho de lote menor que o limite de 100 do Google
-    tamanho_lote = 50
+    # Reduzimos para 25 para ser mais conservador
+    tamanho_lote = 25 
     
-    print(f"Iniciando vetorização de {len(chucks)} chunks em lotes de {tamanho_lote}...")
+    print(f"Iniciando vetorização de {len(chucks)} chunks...")
 
-    # Criamos o banco inicial com o primeiro lote
+    # Criamos o banco inicial
     db = Chroma.from_documents(
         documents=chucks[:tamanho_lote],
         embedding=embeddings,
         persist_directory="./rag_db"
     )
     
-    # Processamos os demais lotes com uma pausa entre eles
     for i in range(tamanho_lote, len(chucks), tamanho_lote):
-        print(f"Aguardando 15 segundos para evitar limite de cota do Google...")
-        time.sleep(15) # Pausa necessária para o plano gratuito
+        # Aumentamos a pausa para 20-30 segundos se o erro persistir
+        print(f"Aguardando 20 segundos para respeitar a cota...")
+        time.sleep(20) 
         
         fim = min(i + tamanho_lote, len(chucks))
         lote_atual = chucks[i:fim]
         
         print(f"Enviando lote: chunks {i} até {fim}...")
-        db.add_documents(lote_atual)
+        try:
+            db.add_documents(lote_atual)
+        except Exception as e:
+            print(f"Erro no lote {i}: {e}")
+            print("Tentando novamente em 60 segundos...")
+            time.sleep(60)
+            db.add_documents(lote_atual)
 
-    print(f"{'='*50}")
-    print(f'DB criada com sucesso na pasta ./chroma_db!')
+    print("DB criada com sucesso!")
 
 
 criar_db()
