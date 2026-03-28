@@ -17,7 +17,7 @@ Este projeto é um chatbot com Recuperação de Texto (RAG) em desenvolvimento. 
 
 1. Clone o repositório:
    ```bash
-   git clone <URL_DO_REPOSIT�RIO>
+   git clone https://github.com/gianpedrobc/-Chatbot-RAG.git
    cd chatbot_RAG
    ```
 2. Crie e ative um ambiente virtual (por exemplo, `venv`):
@@ -38,6 +38,6 @@ Este projeto é um chatbot com Recuperação de Texto (RAG) em desenvolvimento. 
    ```
 2. Execute o chatbot:
    ```bash
-   python main.py
+      streamlit.exe run app.py
    ```
 
